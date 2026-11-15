@@ -129,7 +129,6 @@
         .page {
             height: 100vh;
             min-height: 560px;
-            scroll-snap-align: start;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -182,23 +181,23 @@
                 bottom: 12px
             }
         }
-        .seal {
-    width: 140px;
-    height: 140px;
-    border: 1px solid var(--gold);
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    margin: 0 auto 24px;
-    margin-top: 15px;
-    position: relative;
-    color: var(--gold2);
-    font-family: "Cormorant Garamond", serif;
-    font-size: 40px;
-    cursor: pointer;
-    background: rgba(216, 182, 109, .05);
-    box-shadow: 0 0 0 7px rgba(216, 182, 109, .06), 0 0 45px rgba(216, 182, 109, .12);
 
+        .seal {
+            width: 140px;
+            height: 140px;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 24px;
+            margin-top: 15px;
+            position: relative;
+            color: var(--gold2);
+            font-family: "Cormorant Garamond", serif;
+            font-size: 40px;
+            cursor: pointer;
+            background: rgba(216, 182, 109, .05);
+            box-shadow: 0 0 0 7px rgba(216, 182, 109, .06), 0 0 45px rgba(216, 182, 109, .12);
     </style>
 </head>
 
@@ -206,7 +205,8 @@
     <div class="opening" id="opening">
         <div class="opening-inner">
             <div class="date" style="color:#d6ad62;">SYED'S FAMILY INVITES YOU TO </div>
-            <h1>Nikah Ceremony<br><span  style="color:#d6ad62;font-style:italic;">of </span> <span class="seal">S  &amp;  A </span></h1>
+            <h1>Nikah Ceremony<br><span style="color:#d6ad62;font-style:italic;">of </span> <span class="seal">S &amp; A
+                </span></h1>
             <div class="date"> </div><button class="open-btn" id="openInvitation">Open Invitation&nbsp; ↗</button>
         </div>
     </div>
@@ -214,17 +214,53 @@
         <div><a href="#p3">The day</a><a href="#p2">Our gathering</a><a href="#p4">The place</a></div>
     </header>
     <main>
-        <section class="page" id="p1"><img src="1.jpg" alt="Wedding invitation welcome page"></section>
-        <section class="page" id="p2"><img src="2.jpg" alt="A note from the couple"></section>
-        <section class="page" id="p3"><img src="3.jpg" alt="Wedding date and time details">
+        <section class="page" id="p1"><img src="pages/1.jpg" alt="Wedding invitation welcome page"></section>
+        <section class="page" id="p2"><img src="pages/2.jpg" alt="A note from the couple"></section>
+        <section class="page" id="p3"><img src="pages/3.jpg" alt="Wedding date and time details">
         </section>
-        <section class="page" id="p4"><img src="4.jpg" alt="Fort Grand venue details"></section>
-        <section class="page" id="p5"><img src="5.jpg" alt="Wedding invitation closing page"></section>
+        <section class="page" id="p4"><img src="pages/4.jpg" alt="Fort Grand venue details"></section>
+        <section class="page" id="p5"><img src="pages/5.jpg" alt="Wedding invitation closing page"></section>
     </main>
     <audio id="music" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio><button class="music" id="toggle">♫ Play music</button>
-    <script>const cover = document.getElementById('opening'); document.getElementById('openInvitation').addEventListener('click', () => { cover.classList.add('hidden'); document.getElementById('p1').scrollIntoView({ behavior: 'smooth' }); }); const a = document.getElementById('music'), b = document.getElementById('toggle'); let on = false; b.onclick = async () => { if (!on) { try { await a.play(); on = true; b.textContent = '♫ Pause music' } catch (e) { b.textContent = 'Add music.mp3' } } else { a.pause(); on = false; b.textContent = '♫ Play music' } };</script>
+    <script>
+const cover = document.getElementById('opening');
+const a = document.getElementById('music');
+const b = document.getElementById('toggle');
+
+let on = false;
+
+async function startMusic() {
+    try {
+        await a.play();
+        on = true;
+        b.textContent = '♫ Pause music';
+    } catch (error) {
+        console.log('Music could not start', error);
+    }
+}
+
+// OPEN INVITATION BUTTON
+document.getElementById('openInvitation').addEventListener('click', async () => {
+    cover.classList.add('hidden');
+    document.getElementById('p1').scrollIntoView({
+        behavior: 'smooth'
+    });
+
+    await startMusic();
+});
+
+b.addEventListener('click', async () => {
+    if (!on) {
+        await startMusic();
+    } else {
+        a.pause();
+        on = false;
+        b.textContent = '♫ Play music';
+    }
+});
+</script>
 </body>
 
 </html>
